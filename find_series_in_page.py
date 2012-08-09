@@ -51,8 +51,6 @@ def tester(url):
 
 if __name__=='__main__':
 	
-	#~ tester('http://www.1channel.ch/?letter=a&tv')
-	#~ get_page_count_and_go_deeper('tv.html')
 	i_have_gotten_page_number('http://www.1channel.ch/?letter=123&page=1')
 	
 	
