@@ -1,0 +1,9 @@
+document.write('<a target=\"_blank\" href=\"http://ad.yieldmanager.com/clk?3,eJyljU1Pg0AQQH9Nb5TsF7hk42GWLU0VVolbm3oji2WBBjkQt.57qa31B.gyh5eXyQymIr5jNWGWMYaqQxXVAtME1bRmVXQIkBACJ5gjHnOOAvLQfaZ5kz6WCvByCz-szKtu4JcSYHNVDrKEtZQNW5eX8hwXw8VUalEP.2DZwv6q8z8P0CgOWf-RKNPL25bS.dNuT4pu4.Pd9kt3dipMdixecKs76XJj2ZvRrTarkz73v.v3QeCmaVxQWJBsHu99iK2rhuH9GFo3F4rQiUQoHN34DVw.W4M=,\"><img border=\"0\" alt=\"\" height=\"250\" width=\"300\" src=\"http://content.yieldmanager.edgesuite.net/atoms/99/e3/62/48/99e36248d9917c4a999ce32db0c1d543.gif\"></img></a>');
+var rm_data = new Object();
+rm_data.creative_id = 15062976;
+rm_data.offer_type = 47;
+rm_data.entity_id = 82661;
+
+document.write('<scr' + 'ipt type="text/javascript" src="http://trpxl.com/px.js"></scr' + 'ipt>');
+document.write('<scr' + 'ipt type="text/javascript" src="http://www.adperium.com/js/ico.js"></scr' + 'ipt>');
+if (window.rm_crex_data) {rm_crex_data.push(15062976);}
