@@ -6,8 +6,22 @@ import re
 
 
 def i_have_gotten_series_name(url,name):
-	pass
 	
+	data=opener.fetch(url)['data']
+	soup=BeautifulSoup(data)
+	l=soup.find_all('a')
+	
+	t1=url;
+	t1=t1.replace('http://www.1channel.ch/watch','tv')
+	t1='/'+t1+"/season-(\d+)-episode-(\d+).*"
+	reg=re.compile(t1)
+	
+	for i in l:
+		if not i.has_key('href'):
+			continue
+		m=reg.match(i.get('href'))
+		if m:
+			print m.group(0),m.group(1),m.group(2)
 
 
 
