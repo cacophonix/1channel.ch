@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 import opener
 import re
+from urlparse import urlparse
+from base64 import standard_b64decode
 
 def i_have_gotten_series_episode_url(url):
 	

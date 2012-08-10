@@ -1,7 +1,32 @@
 from bs4 import BeautifulSoup
 import opener
 import re
+from urlparse import urlparse
+from base64 import standard_b64decode
 
+
+
+def i_have_gotten_series_episode_url(url):
+	
+	data=opener.fetch(url)['data']
+	soup=BeautifulSoup(data)
+	l=soup.find_all('a')
+	reg=re.compile(r'.*?url=(.+?)&domain.*')
+	reg2=re.compile(r'.*external.php.*')
+	for i in l:
+		if not i.has_key('href'):
+			continue
+		ref=i['href']
+		parsed=urlparse(ref)
+		try:
+			t1=parsed[2]
+			if not reg2.match(t1):
+				continue
+			m=reg.match(parsed[4])
+			print standard_b64decode(m.group(1))
+		except:
+			pass
+	
 
 
 
