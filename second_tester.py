@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import opener
 import re
+from urlparse import urlparse
+from base64 import standard_b64decode
+
+
 
 def i_have_gotten_series_episode_url(url):
 	
@@ -25,6 +29,13 @@ def i_have_gotten_series_episode_url(url):
 	
 
 
+
+
+
+
+
+
+
 def i_have_gotten_series_name(url,name):
 	
 	data=opener.fetch(url)['data']
@@ -42,6 +53,7 @@ def i_have_gotten_series_name(url,name):
 		m=reg.match(i.get('href'))
 		if m:
 			print m.group(0),m.group(1),m.group(2)
+	
 
 
 
@@ -84,17 +96,11 @@ def get_page_count_and_go_deeper(url):
 	
 
 
-def tester(url):
-	pass
-	
-	
-	
-	
 
 if __name__=='__main__':
 	
 	#~ i_have_gotten_series_name("http://www.1channel.ch/watch-9460-2020","hello")
 	#~ i_have_gotten_page_number('http://www.1channel.ch/?letter=123&tv&page=1')
 	#~ get_page_count_and_go_deeper('http://www.1channel.ch/?letter=123&tv')
-	
+	i_have_gotten_series_episode_url('http://www.1channel.ch/tv-27669-Naruto-Shippuden/season-1-episode-6')
 	
