@@ -7,7 +7,7 @@ import MySQLdb as mdb
 import sys
 from datetime import datetime
 
-con=con=mdb.connect('localhost','root','s','vidsearch')
+con=mdb.connect('localhost','root','s','vidsearch')
 
 def get_series_id_in_database(name,link,d):
 	
@@ -20,18 +20,22 @@ def get_series_id_in_database(name,link,d):
 		cur.execute('INSERT INTO `vs_series`(`series_name`, `imdb_link`, `series_release_date`) VALUES (%s,%s,%s)',(name,link,d))
 		return get_series_id_in_database(name,link,d)
 
-
+def set_season_episode(series_id,episode_link,season,episode):
+	
+	cur=con.cursor()
+	cur.execute('SELECT * FROM `vs_series_links` WHERE `series_id`=%s AND `link_url`=%s',(series_id,episode_link))
+	res=cur.fetchone()
+	if res:
+		return
+	else :
+		sql='''INSERT INTO `vs_series_links`(`series_id`, `season`, `episode`, `link_url`) VALUES (%s,%s,%s,%s)'''
+		args=(series_id,season,episode,episode_link,)
+		cur.execute(sql,args)
 
 def i_have_got_series_episode_url(name,url,season,episode):
 	
 	data=opener.fetch(url)['data']
 	soup=BeautifulSoup(data)
-	imdb_link=None
-	try:
-		imdb_link=soup.select('.mlink_imdb')[0].find_all('a')
-		imdb_link=imdb_link[0].get('href')
-	except:
-		pass
 	l=soup.find_all('a')
 	reg=re.compile(r'.*?url=(.+?)&domain.*')
 	reg2=re.compile(r'.*external.php.*')
@@ -67,10 +71,14 @@ def i_have_got_series_name(url,name):
 	except:
 		pass
 	
+	imdb_link=None
+	try:
+		imdb_link=soup.select('.mlink_imdb')[0].find_all('a')
+		imdb_link=imdb_link[0].get('href')
+	except:
+		pass
 	
-	series_id_in_database=get_series_id_in_database(name)
-	
-	
+	series_id_in_database=get_series_id_in_database(name,imdb_link,reseased_date)
 	
 	l=soup.find_all('a')
 	t1=url;
