@@ -32,13 +32,14 @@ def set_season_episode(series_id,episode_link,season,episode):
 		args=(series_id,season,episode,episode_link,)
 		cur.execute(sql,args)
 
-def i_have_got_series_episode_url(name,url,season,episode):
+def i_have_got_series_episode_url(series_id,url,season,episode):
 	
 	data=opener.fetch(url)['data']
 	soup=BeautifulSoup(data)
 	l=soup.find_all('a')
 	reg=re.compile(r'.*?url=(.+?)&domain.*')
 	reg2=re.compile(r'.*external.php.*')
+	
 	for i in l:
 		if not i.has_key('href'):
 			continue
@@ -50,6 +51,7 @@ def i_have_got_series_episode_url(name,url,season,episode):
 				continue
 			m=reg.match(parsed[4])
 			final_url=standard_b64decode(m.group(1))
+			set_season_episode(series_id,final_url,season,episode)
 		except:
 			pass
 	
@@ -71,14 +73,14 @@ def i_have_got_series_name(url,name):
 	except:
 		pass
 	
-	imdb_link=None
+	imdb_link="imdb link is not available"
 	try:
 		imdb_link=soup.select('.mlink_imdb')[0].find_all('a')
 		imdb_link=imdb_link[0].get('href')
 	except:
 		pass
 	
-	series_id_in_database=get_series_id_in_database(name,imdb_link,reseased_date)
+	series_id_in_database=get_series_id_in_database(name,imdb_link,released_date)
 	
 	l=soup.find_all('a')
 	t1=url;
@@ -132,7 +134,7 @@ def get_page_count_and_go_deeper(url):
 	
 	for i in range(1,page_count+1):
 		new_url=url+"&page="+str(i)
-		i_have_gotten_page_number(url)
+		i_have_got_page_number(url)
 	
 
 def generate_all_the_main_page_name():
@@ -149,8 +151,8 @@ if __name__=='__main__':
 	
 	#~ print generate_all_the_main_page_name()
 	
-	i_have_got_series_name("http://www.1channel.ch/watch-9460-2020","hello")
+	#~ i_have_got_series_name("http://www.1channel.ch/watch-9460-2020","hello")
 	#~ i_have_got_page_number('http://www.1channel.ch/?letter=123&tv&page=1')
-	#~ get_page_count_and_go_deeper('http://www.1channel.ch/?letter=123&tv')
+	get_page_count_and_go_deeper('http://www.1channel.ch/?letter=123&tv')
 	
 	
