@@ -6,6 +6,8 @@ from base64 import standard_b64decode
 import MySQLdb as mdb
 import sys
 from datetime import datetime
+from Multiprocessing import Pool
+
 
 con=mdb.connect('localhost','root','s','vidsearch')
 
@@ -99,12 +101,21 @@ def i_have_got_series_name(url,name):
 			i_have_got_series_episode_url(series_id_in_database,episode_link,season,episode)
 	
 
-
+count=1
 
 
 def i_have_got_page_number(url):
 	
+	print url
 	data=opener.fetch(url)['data']
+	global count
+	t1=str(count)+'.html'
+	count+=1
+	f=open(t1,'w')
+	f.write(data)
+	
+	return 
+	
 	soup=BeautifulSoup(data)
 	l=soup.find_all('a')
 	reg=re.compile(r'.*/watch-\d+-(.*)')
@@ -134,7 +145,7 @@ def get_page_count_and_go_deeper(url):
 	
 	for i in range(1,page_count+1):
 		new_url=url+"&page="+str(i)
-		i_have_got_page_number(url)
+		i_have_got_page_number(new_url)
 	
 
 def generate_all_the_main_page_name():
@@ -153,6 +164,11 @@ if __name__=='__main__':
 	
 	#~ i_have_got_series_name("http://www.1channel.ch/watch-9460-2020","hello")
 	#~ i_have_got_page_number('http://www.1channel.ch/?letter=123&tv&page=1')
-	get_page_count_and_go_deeper('http://www.1channel.ch/?letter=123&tv')
+	#~ get_page_count_and_go_deeper('http://www.1channel.ch/?letter=123&tv')
+	
+	l=generate_all_the_main_page_name()
+	
+	pool=Pool(10)
+	p.map(get_page_count_and_go_deeper,l)
 	
 	
