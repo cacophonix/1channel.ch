@@ -1,0 +1,1787 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0036)http://www.hidemyass.com/proxy-list/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Free Proxy List - Public Proxy Servers (IP PORT) - Hide My Ass!</title>
+ 
+<meta name="language" content="en">
+<link rel="stylesheet" type="text/css" href="./proxy_files/global.css">
+<link rel="stylesheet" type="text/css" href="./proxy_files/proxy-list.css">
+<link rel="icon" href="http://www.hidemyass.com/proxy-list/favicon.ico" type="image/x-icon">
+<meta name="description" content="Free proxy list index; the largest real-time database of public proxy servers online.">
+<meta name="keywords" content="free proxy list, free proxy lists, web proxy lists, proxies, ip proxies, public proxy, public proxies, public proxy server">
+<script type="text/javascript" async="" src="./proxy_files/dc.js"></script><script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(
+	['_setAccount', 'UA-950416-6'],
+	['_setDomainName', 'hidemyass.com'],
+	['_addIgnoredRef', 'vpn.hidemyass.com'],
+	['_addIgnoredRef', 'blog.hidemyass.com'],
+	['_addIgnoredRef', 'forum.hidemyass.com'],
+	['_addIgnoredRef', '1.hidemyass.com'],
+	['_addIgnoredRef', '2.hidemyass.com'], 
+	['_addIgnoredRef', '3.hidemyass.com'],
+	['_addIgnoredRef', '4.hidemyass.com'],
+	['_addIgnoredRef', '5.hidemyass.com'],
+	['_addIgnoredRef', '6.hidemyass.com'],
+	['_addIgnoredRef', '7.hidemyass.com'], 
+	['_addIgnoredRef', 'affiliate.hidemyass.com'], 
+	['_trackPageview'],
+	['b._setAccount', 'UA-950416-55'],
+	['b._setDomainName', 'hidemyass.com'],
+	['b._addIgnoredRef', 'vpn.hidemyass.com'], 
+	['b._addIgnoredRef', 'blog.hidemyass.com'],
+	['b._addIgnoredRef', 'forum.hidemyass.com'],
+	['b._addIgnoredRef', '1.hidemyass.com'], 
+	['b._addIgnoredRef', '2.hidemyass.com'], 
+	['b._addIgnoredRef', '3.hidemyass.com'], 
+	['b._addIgnoredRef', '4.hidemyass.com'], 
+	['b._addIgnoredRef', '5.hidemyass.com'], 
+	['b._addIgnoredRef', '6.hidemyass.com'], 
+	['b._addIgnoredRef', '7.hidemyass.com'], 
+	['b._addIgnoredRef', 'affiliate.hidemyass.com'],
+	['b._trackPageview']
+);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script src="./proxy_files/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script src="./proxy_files/simplejax.js" type="text/javascript"></script>
+<script src="./proxy_files/tinysort.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+var updateplInt = false;
+var tsLast = 0;
+var sortSelector = 0;
+var sortParams = 0;
+
+var updatepl = new simplejax('/proxy-list/xhr/update/50', function(data)
+{
+   // If error, exit and kill refresh
+   if(data.error)
+   {
+      clearInterval(updateplInt);
+      return;
+   }
+
+   if(data.length == 0) return;
+
+   // Oust last *new* icons
+   if(data.entries.length > 0) $('.newproxy').removeClass('newproxy');
+
+   // Update timestamps we retrieve one from server
+   // so all follow same time
+   if(typeof(data.ts) != 'undefined')
+   {
+      tsLast = data.ts;
+      $('.timestamp').each(function() {
+         $(this).find('.updatets').each(function()
+         {
+            $(this).html(elapsed(tsLast - $(this).parent().attr('rel')));
+         });
+      });
+   }
+
+   for(var i = 0; i < data.entries.length; i++)
+   {
+      // Fade in new tr entry
+      $(data.entries[i]).fadeIn(i * 200).prependTo('#listtable');
+
+      // Remove no results if exists
+      $('#noresult').remove();
+
+      // Remove last entry if at table max
+//	alert ($('#listtable tr').size()+' vs '+parseInt($('#listtable').attr('rel')));
+      if($('#listtable tr').size() >= parseInt($('#listtable').attr('rel')))
+      {
+ //        alert($('#listtable tr:last').html());
+         $('#listtable tr:last').remove();
+      }
+   }
+
+   // Reorder table
+   if(sortSelector !== 0)
+   {
+      $('#listtable tr').tsort(sortSelector, sortParams);
+   }
+}, {'non-cached':true, 'json':true});
+
+function getSortBy()
+{
+   var sortBy = $('input[name="sortBy"]').val();
+   var orderBy = $('select[name="o"]').val();
+   orderBy = orderBy == '0' ? 'desc' : 'asc';
+
+   switch(sortBy)
+   {
+      case 'response_time':
+         sortSelector = '.response_time';
+         sortParams = {attr:'rel', order:orderBy};
+
+         return $('#listtable tr:last .response_time').attr('rel');
+      break;
+
+      case 'connection_time':
+         sortSelector = '.connection_time';
+         sortParams = {attr:'rel', order:orderBy};
+
+         return $('#listtable tr:last .connection_time').attr('rel');
+      break;
+
+      case 'country':
+         sortSelector = '.country';
+         sortParams = {attr:'rel', order:orderBy}
+
+         return $("#listtable tr:last .country").attr('rel');
+      break;
+
+      case 'date':
+         return '0';
+      break;
+   }
+
+   return '';
+}
+
+function startRefresh()
+{
+   updateplInt = setInterval(function()
+   {
+      updatepl.set('method', 'POST', 'q=' + getSortBy());
+      updatepl.invoke();
+   }, 30000);
+}
+
+function elapsed(remaining)
+{
+   var units = [1, 60, 3600];
+   units = units.reverse();
+   var unitNames = ['s', 'm', 'h'];
+   unitNames = unitNames.reverse();
+
+   var output = [];
+   for(unit in units)
+   {
+      if(remaining >= units[unit])
+      {
+         var quotient = Math.floor(remaining / units[unit]);
+         remaining = remaining % units[unit];
+//         output.push(quotient + ' ' + ((quotient == 1) ? unitNames[unit] : unitNames[unit] + 's'));
+         output.push(quotient + unitNames[unit]);
+      }
+   }
+
+   if(output.length > 2)
+      output.pop();
+
+   if(output.length > 1)
+   {
+      var last = output.pop();
+//      var finalstr = output.join(', ') + ' and ' + last;
+      var finalstr = output.join(', ') + ' ' + last;
+   }else
+      var finalstr = output.pop();
+
+   return finalstr;
+}
+
+
+$(document).ready(function()
+{
+   $('#country').click(function()
+   {
+      $('#allCountries').attr('checked', '');
+   });
+
+   $('#ports').click(function()
+   {
+      $('#allPorts').attr('checked', '');
+   });
+
+   $('#pauserefresh').click(function()
+   {
+	if($(this).hasClass("unpauserefresh")){
+		$(this).removeClass("unpauserefresh");
+	        startRefresh();
+	}else{
+		$(this).addClass("unpauserefresh");
+	        clearInterval(updateplInt);
+	}
+	return false;
+   });
+
+   $('#country-sort-count').click(function()
+   {
+      $('#country option').tsort({attr:'rel', order:'desc'});
+   });
+
+   $('#country-sort-name').click(function()
+   {
+      $('#country option').tsort();
+   });
+
+   $('#allCountries').change(function()
+   {
+      if($(this).is(':checked'))
+         $('#country option').attr('selected', 'selected');
+      else
+         $('#country option').attr('selected', '');
+   });
+
+   // Temporary
+   $('.submitbarrightcorner').click(function() { $('.proxyform').toggle(); });
+
+   startRefresh();
+
+});
+-->
+</script>
+</head>
+<body>
+
+<div id="subpagebgtabs">
+
+	<div id="container">
+	
+		<div class="headersub headersubtab">
+
+			<h1><a href="http://www.hidemyass.com/" title="Go to the home page">Hide My Ass!</a></h1>
+			
+			<div id="subnavcontainer">
+				<ul id="subnav">
+					<li id="subnavleft"><a href="http://www.hidemyass.com/">Home</a></li>				
+					<li><a href="http://blog.hidemyass.com/">Blog</a></li>					
+					<li><a href="http://forum.hidemyass.com/">Community</a></li>			
+					<li><a href="http://twitter.com/hidemyass/">Twitter</a></li>
+<li><a href="http://affiliate.hidemyass.com/">Affiliate</a></li>
+<li><a href="http://www.hidemyass.com/jobs/">Jobs</a></li>
+			<li><a href="http://www.hidemyass.com/contact/" id="subnavright">Contact</a></li>
+				</ul>
+			</div>
+			<!-- End subnavcontainer -->
+<style>#vpnbubble{background:url(https://d1piupybsgr6dr.cloudfront.net/img/global/sports-bubble.png) no-repeat;position:relative;top:17px;left:245px;border:0;width:135px;height:26px;display:block;text-indent:-10000px}#vpnbubble:hover{background-position:0 -26px;}			</style><a href="http://www.hidemyass.com/vpn/" id="vpnbubble">vpn special offer</a>
+			<ul id="mainnav" style="padding:0 0 0 10px;height:149px">
+				<li id="vpn"><a href="http://www.hidemyass.com/vpn/">Pro VPN</a></li>
+				<li id="proxy"><a href="http://www.hidemyass.com/proxy/">Web proxy </a></li>
+				<li id="proxylist"><a href="./proxy_files/proxy.html">Proxy list</a></li>
+				<li id="mail"><a href="http://www.hidemyass.com/anonymous-email/">Anonymous email</a></li>
+				<li id="software"><a href="http://www.hidemyass.com/software/">Privacy software</a></li>
+				<li id="upload"><a href="http://www.hidemyass.com/upload/">File upload</a></li>
+				<li id="referrer"><a href="http://www.hidemyass.com/anonymous-referrer/">Anonymous referrer</a></li>
+			</ul>
+			
+			<div class="subheading subheadingproxylist">
+			
+				<h1>Free proxy lists (IP:PORT)</h1>
+				<p>Real-time auto-updatable database of free working IP:PORT proxies</p>
+				<ul>
+					<li><span>Free proxy list</span></li>
+					<li class="inactivetab"><a href="http://www.hidemyass.com/proxy-list/premium/">Premium lists</a></li>
+				</ul>
+			
+			</div>
+			<!-- End subheading -->
+		
+		</div>
+		<!-- End header -->
+		<div id="proxylisttopleft">
+			<h2 class="translation enh2mainheader">The largest real-time database of  free working public proxies</h2>
+			<p>Public proxy servers can be used with any application that supports the use of proxies (e.g. web browsers). They provide an easy way to mask your true IP address and enable you to surf anonymously online.</p>
+			<p>Our proxy lists are checked in real-time with up to the minute auto-updatable results 24/7. Since proxies are checked continually all day you can be sure to find a reliable database of working proxies that have worked within the last 24hrs.</p>
+		</div>
+		
+		<!-- End proxylisttopleft -->
+		
+		<div id="premiumpromo">
+			<div class="translation enforlife">
+				<h3 class="translation enh3gopremium">Go premium</h3>
+				<p>Get our proxy list database sent to your inbox every day in raw .txt format.</p>
+				<span><a href="http://www.hidemyass.com/proxy-list/premium/">Learn more about premium lists</a></span>	
+			</div>
+			<!-- End enforlife -->
+			<div id="premiumpromobottom"></div>
+		</div>
+		<!-- End premiumpromo -->
+		
+		<form action="" method="post">
+			<div id="formbox">
+				<div id="formboxwrapper">
+				<ul class="proxyform">
+					<li>
+						<fieldset>
+							<legend><span>Proxy country</span></legend>
+							<label><input type="checkbox" id="allCountries" name="ac" checked="checked"> All countries</label>
+							<select id="country" name="c[]" class="selectmultiple" multiple="">
+								<option rel="387" value="China" selected="selected">China (387)</option>
+								<option rel="275" value="Indonesia" selected="selected">Indonesia (275)</option>
+								<option rel="269" value="Brazil" selected="selected">Brazil (269)</option>
+								<option rel="150" value="United States" selected="selected">United States (150)</option>
+								<option rel="134" value="Venezuela" selected="selected">Venezuela (134)</option>
+								<option rel="126" value="Egypt" selected="selected">Egypt (126)</option>
+								<option rel="68" value="Colombia" selected="selected">Colombia (68)</option>
+								<option rel="66" value="Argentina" selected="selected">Argentina (66)</option>
+								<option rel="57" value="Iran" selected="selected">Iran (57)</option>
+								<option rel="53" value="Thailand" selected="selected">Thailand (53)</option>
+								<option rel="49" value="Russian Federation" selected="selected">Russian Federation (49)</option>
+								<option rel="41" value="India" selected="selected">India (41)</option>
+								<option rel="30" value="Peru" selected="selected">Peru (30)</option>
+								<option rel="28" value="Taiwan, Republic of China" selected="selected">Taiwan, Republic of China (28)</option>
+								<option rel="27" value="France" selected="selected">France (27)</option>
+								<option rel="23" value="Chile" selected="selected">Chile (23)</option>
+								<option rel="21" value="Ukraine" selected="selected">Ukraine (21)</option>
+								<option rel="20" value="Bangladesh" selected="selected">Bangladesh (20)</option>
+								<option rel="19" value="Turkey" selected="selected">Turkey (19)</option>
+								<option rel="18" value="Germany" selected="selected">Germany (18)</option>
+								<option rel="17" value="Hungary" selected="selected">Hungary (17)</option>
+								<option rel="17" value="Ecuador" selected="selected">Ecuador (17)</option>
+								<option rel="16" value="Poland" selected="selected">Poland (16)</option>
+								<option rel="16" value="Hong Kong" selected="selected">Hong Kong (16)</option>
+								<option rel="15" value="Czech Republic" selected="selected">Czech Republic (15)</option>
+								<option rel="15" value="United Arab Emirates" selected="selected">United Arab Emirates (15)</option>
+								<option rel="15" value="Canada" selected="selected">Canada (15)</option>
+								<option rel="14" value="South Africa" selected="selected">South Africa (14)</option>
+								<option rel="13" value="United Kingdom" selected="selected">United Kingdom (13)</option>
+								<option rel="13" value="Nigeria" selected="selected">Nigeria (13)</option>
+								<option rel="12" value="Bulgaria" selected="selected">Bulgaria (12)</option>
+								<option rel="12" value="Serbia" selected="selected">Serbia (12)</option>
+								<option rel="11" value="Malaysia" selected="selected">Malaysia (11)</option>
+								<option rel="11" value="Iraq" selected="selected">Iraq (11)</option>
+								<option rel="10" value="Philippines" selected="selected">Philippines (10)</option>
+								<option rel="10" value="Pakistan" selected="selected">Pakistan (10)</option>
+								<option rel="9" value="Korea, Republic of" selected="selected">Korea, Republic of (9)</option>
+								<option rel="9" value="Mexico" selected="selected">Mexico (9)</option>
+								<option rel="8" value="Netherlands" selected="selected">Netherlands (8)</option>
+								<option rel="8" value="Viet Nam" selected="selected">Viet Nam (8)</option>
+								<option rel="8" value="Kenya" selected="selected">Kenya (8)</option>
+								<option rel="7" value="Bolivia" selected="selected">Bolivia (7)</option>
+								<option rel="7" value="Georgia" selected="selected">Georgia (7)</option>
+								<option rel="6" value="Denmark" selected="selected">Denmark (6)</option>
+								<option rel="6" value="Cambodia" selected="selected">Cambodia (6)</option>
+								<option rel="6" value="Saudi Arabia" selected="selected">Saudi Arabia (6)</option>
+								<option rel="6" value="Spain" selected="selected">Spain (6)</option>
+								<option rel="6" value="Japan" selected="selected">Japan (6)</option>
+								<option rel="5" value="Afghanistan" selected="selected">Afghanistan (5)</option>
+								<option rel="5" value="Moldova, Republic of" selected="selected">Moldova, Republic of (5)</option>
+								<option rel="5" value="Slovakia" selected="selected">Slovakia (5)</option>
+								<option rel="5" value="Puerto Rico" selected="selected">Puerto Rico (5)</option>
+								<option rel="4" value="Macedonia" selected="selected">Macedonia (4)</option>
+								<option rel="4" value="Sudan" selected="selected">Sudan (4)</option>
+								<option rel="4" value="Latvia" selected="selected">Latvia (4)</option>
+								<option rel="4" value="Croatia" selected="selected">Croatia (4)</option>
+								<option rel="4" value="Brunei Darussalam" selected="selected">Brunei Darussalam (4)</option>
+								<option rel="3" value="Albania" selected="selected">Albania (3)</option>
+								<option rel="3" value="Costa Rica" selected="selected">Costa Rica (3)</option>
+								<option rel="3" value="Zimbabwe" selected="selected">Zimbabwe (3)</option>
+								<option rel="3" value="Palestinian Territory, Occupied" selected="selected">Palestinian Territory, Occupied (3)</option>
+								<option rel="3" value="Rwanda" selected="selected">Rwanda (3)</option>
+								<option rel="3" value="Azerbaijan" selected="selected">Azerbaijan (3)</option>
+								<option rel="3" value="Syrian Arab Republic" selected="selected">Syrian Arab Republic (3)</option>
+								<option rel="3" value="Italy" selected="selected">Italy (3)</option>
+								<option rel="3" value="Switzerland" selected="selected">Switzerland (3)</option>
+								<option rel="3" value="Nepal" selected="selected">Nepal (3)</option>
+								<option rel="3" value="Guatemala" selected="selected">Guatemala (3)</option>
+								<option rel="3" value="Romania" selected="selected">Romania (3)</option>
+								<option rel="2" value="Paraguay" selected="selected">Paraguay (2)</option>
+								<option rel="2" value="Sri Lanka" selected="selected">Sri Lanka (2)</option>
+								<option rel="2" value="Kyrgyzstan" selected="selected">Kyrgyzstan (2)</option>
+								<option rel="2" value="Malta" selected="selected">Malta (2)</option>
+								<option rel="2" value="Iceland" selected="selected">Iceland (2)</option>
+								<option rel="2" value="Norway" selected="selected">Norway (2)</option>
+								<option rel="2" value="Kazakhstan" selected="selected">Kazakhstan (2)</option>
+								<option rel="2" value="Slovenia" selected="selected">Slovenia (2)</option>
+								<option rel="1" value="Liberia" selected="selected">Liberia (1)</option>
+								<option rel="1" value="Luxembourg" selected="selected">Luxembourg (1)</option>
+								<option rel="1" value="Algeria" selected="selected">Algeria (1)</option>
+								<option rel="1" value="Zambia" selected="selected">Zambia (1)</option>
+								<option rel="1" value="Greece" selected="selected">Greece (1)</option>
+								<option rel="1" value="Macao" selected="selected">Macao (1)</option>
+								<option rel="1" value="Bahrain" selected="selected">Bahrain (1)</option>
+								<option rel="1" value="Fiji" selected="selected">Fiji (1)</option>
+								<option rel="1" value="Austria" selected="selected">Austria (1)</option>
+								<option rel="1" value="Cote D&#39;Ivoire" selected="selected">Cote D'Ivoire (1)</option>
+								<option rel="1" value="Sweden" selected="selected">Sweden (1)</option>
+								<option rel="1" value="Ireland" selected="selected">Ireland (1)</option>
+								<option rel="1" value="Singapore" selected="selected">Singapore (1)</option>
+								<option rel="1" value="Australia" selected="selected">Australia (1)</option>
+								<option rel="1" value="Honduras" selected="selected">Honduras (1)</option>
+								<option rel="1" value="Mongolia" selected="selected">Mongolia (1)</option>
+								<option rel="1" value="Ethiopia" selected="selected">Ethiopia (1)</option>
+								<option rel="1" value="Israel" selected="selected">Israel (1)</option>
+								<option rel="1" value="Trinidad and Tobago" selected="selected">Trinidad and Tobago (1)</option>
+								<option rel="1" value="Armenia" selected="selected">Armenia (1)</option>
+								<option rel="1" value="Lebanon" selected="selected">Lebanon (1)</option>
+								<option rel="1" value="Haiti" selected="selected">Haiti (1)</option>
+							</select>
+							<small id="listsort"><a href="javascript:void(0)" id="country-sort-count">Sort by count</a>&nbsp;|&nbsp;<a href="javascript:void(0)" id="country-sort-name">Sort by name</a></small>
+						</fieldset>
+					</li>
+					<li>
+						<fieldset>
+							<legend>Port(s)</legend>
+								<label><input type="checkbox" id="allPorts" checked=""> All ports</label>
+								<input type="text" name="p" id="ports" value="" class="textinput">
+								<small><strong>TIP:</strong> Enter specific ports in the<br>above box. Separate more than<br>one port by a comma (8080, 80,<br> 443 ...). A maximum of 20 ports<br>allowed.</small>
+						</fieldset>
+					</li>
+					<li>
+						<fieldset>
+							<legend><span>Protocol</span></legend>
+<label><input type="checkbox" name="pr[]" value="0" checked="checked">HTTP</label><label><input type="checkbox" name="pr[]" value="1" checked="checked">HTTPS</label><label><input type="checkbox" name="pr[]" value="2" checked="checked">socks4/5</label>						
+						</fieldset>
+					</li>	
+					<li>
+						<fieldset>
+						<legend><span>Anonymity level</span></legend>
+<label><input type="checkbox" name="a[]" value="0" checked="checked">None</label><label><input type="checkbox" name="a[]" value="1" checked="checked">Low</label><label><input type="checkbox" name="a[]" value="2" checked="checked">Medium</label><label><input type="checkbox" name="a[]" value="3" checked="checked">High</label><label><input type="checkbox" name="a[]" value="4" checked="checked">High +KA</label>							
+						</fieldset>
+						<fieldset class="extrapadding">
+							<legend><span>PlanetLab</span></legend>
+							<label><input type="checkbox" name="pl" checked="checked"> Include</label>
+						</fieldset>						
+					</li>		
+					<li id="norightborder">
+						<fieldset>
+							<legend><span>Speed</span></legend>
+<label><input type="checkbox" name="sp[]" value="1" checked="checked">Slow</label><label><input type="checkbox" name="sp[]" value="2" checked="checked">Medium</label><label><input type="checkbox" name="sp[]" value="3" checked="checked">Fast</label>						</fieldset>
+						<fieldset class="extrapadding">
+							<legend><span>Connection time</span></legend>
+<label><input type="checkbox" name="ct[]" value="1" checked="checked">Slow</label><label><input type="checkbox" name="ct[]" value="2" checked="checked">Medium</label><label><input type="checkbox" name="ct[]" value="3" checked="checked">Fast</label>						</fieldset>
+					</li>
+				</ul>
+				<div id="submitbar">
+<div id="submitbarsecondborder">
+					<ul id="sortform">
+						<li>
+							<label>Sort by</label>
+<select name="s"><option value="0" selected="selected">Date tested</option><option value="1">Response time</option><option value="2">Connection time</option><option value="3">Country A-Z</option></select>
+						</li>
+						<li>
+<select name="o"><option value="0" selected="selected">DESC</option><option value="1">ASC</option></select>
+						</li>
+						<li>
+<select name="pp"><option value="0"> per page10</option><option value="1"> per page25</option><option value="2" selected="selected"> per page50</option><option value="3"> per page100</option></select>
+						</li>
+					</ul>
+					<ul id="submitbuttons">
+						<li><input type="submit" class="pauserefresh" id="pauserefresh" value="Unpause live refresh"></li>
+						<li><input type="submit" id="updateresults" value="Update results"></li>					
+					</ul>			
+</div>			
+	</div>
+				<!-- End submitbar -->
+				
+				</div>
+				<!-- End formboxwrapper -->
+			</div>
+			<input type="hidden" name="sortBy" value="date">
+			<!-- End formbox -->
+		</form>
+		
+		<table id="listtable" cellpadding="0" cellspacing="0" rel="50">
+		   <thead>
+			<tr id="theader">
+				<td id="theaderleft">Last update</td>
+				<td>IP address</td>
+				<td>Port</td>
+				<td>Country</td>
+				<td>Speed</td>
+				<td>Connection time</td>
+				<td>Type</td>
+				<td id="theaderright">Anonymity</td>
+			</tr>
+		   </thead>
+  <tbody><tr class="" style="" rel="12103890"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.WwOm{display:none}.JoQb{display:inline}.T1Rr{display:none}.xARi{display:inline}</style><span style="display: inline">200</span><span style="display:none">10</span><span class="T1Rr">45</span><span></span>.<span class="JoQb">195</span><span style="display:none">112</span><span class="T1Rr">230</span><span class="" style="">.</span><span style="display: inline">131</span><span class="T1Rr">237</span><div style="display:none">48</div>.<span class="150">76</span></span></td><td>8080</td><td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td><td> <div class="speedbar response_time" rel="8833"><div class="slow" style="width:12%"> </div></div></td><td> <div class="speedbar connection_time" rel="3234"><div class="medium" style="width:35%"> </div></div></td><td>HTTP</td><td class="rightborder">None</td></tr><tr class="altshade" style="" rel="12103893"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.b1m3{display:none}.ThL3{display:inline}.UXvV{display:none}.Vf1o{display:inline}</style><span class="214">114</span><span class="UXvV">170</span><div style="display:none">47</div>.<span class="ThL3">35</span><span style="display:none">92</span><div style="display:none">186</div>.167<span style="display:none">157</span><span class="UXvV">159</span><div style="display:none">91</div>.<span style="display: inline">38</span></span></td><td>8080</td><td rel="tw"><span class="country"><img src="./proxy_files/tw.png" alt="flag"> Taiwan, Republic of China</span></td><td> <div class="speedbar response_time" rel="8028"><div class="slow" style="width:20%"> </div></div></td><td> <div class="speedbar connection_time" rel="456"><div class="fast" style="width:91%"> </div></div></td><td>HTTPS</td><td class="rightborder">High +KA</td></tr><tr class="" style="" rel="12103889"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.GvuQ{display:none}.SuDB{display:inline}.OoBE{display:none}.pWlf{display:inline}.b5sb{display:none}.NkSb{display:inline}</style><span style="display: inline">113</span><span style="display:none">124</span>.<span class="SuDB">140</span><span style="display:none">185</span><div style="display:none">98</div>.<span class="SuDB">74</span><span style="display:none">29</span><div style="display:none">2</div>.<span style="display: inline">26</span></span></td><td>8000</td><td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td><td> <div class="speedbar response_time" rel="6464"><div class="medium" style="width:35%"> </div></div></td><td> <div class="speedbar connection_time" rel="359"><div class="fast" style="width:93%"> </div></div></td><td>HTTPS</td><td class="rightborder">High +KA</td></tr><tr class="altshade" style="" rel="12103891"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.yPag{display:none}.OELg{display:inline}</style>193<span class="yPag">244</span><div style="display:none">97</div>.<span class="OELg">107</span><div style="display:none">64</div>.168<span class="yPag">27</span><div style="display:none">193</div>.<span style="display: inline">26</span></span></td><td>8080</td><td rel="ua"><span class="country"><img src="./proxy_files/ua.png" alt="flag"> Ukraine</span></td><td> <div class="speedbar response_time" rel="5608"><div class="medium" style="width:44%"> </div></div></td><td> <div class="speedbar connection_time" rel="49"><div class="fast" style="width:100%"> </div></div></td><td>HTTPS</td><td class="rightborder">High +KA</td></tr><tr class="" style="" rel="12103892"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.PACV{display:none}.nr8t{display:inline}.FE3y{display:none}.uIoq{display:inline}</style>190<span style="display:none">184</span><span></span>.205<div style="display:none">89</div>.<span style="display: inline">159</span><span style="display:none">161</span><span></span>.191</span></td><td>8080</td><td rel="ve"><span class="country"><img src="./proxy_files/ve.png" alt="flag"> Venezuela</span></td><td> <div class="speedbar response_time" rel="6076"><div class="medium" style="width:39%"> </div></div></td><td> <div class="speedbar connection_time" rel="191"><div class="fast" style="width:100%"> </div></div></td><td>HTTPS</td><td class="rightborder">High +KA</td></tr><tr class="altshade" style="" rel="12103894"><td class="leftborder timestamp" rel="1344718743"><span class="updatets newproxy">29 secs</span></td><td><span><style>.mlai{display:none}.rknb{display:inline}.Erpf{display:none}.a1_5{display:inline}</style><span class="40">177</span><span></span><span class="" style="">.</span><span class="13">139</span><span></span><span class="" style="">.</span><span style="display: inline">248</span><span style="display:none">18</span><span class="Erpf">227</span><div style="display:none">195</div>.40</span></td><td>3128</td><td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td><td> <div class="speedbar response_time" rel="7119"><div class="slow" style="width:29%"> </div></div></td><td> <div class="speedbar connection_time" rel="656"><div class="fast" style="width:87%"> </div></div></td><td>HTTP</td><td class="rightborder">Low</td></tr><tr class="" rel="12103888">
+         <td class="leftborder timestamp" rel="1344718685"><span class="updatets ">1m 27s</span></td>
+         <td><span><style>
+.H8PV{display:none}
+.kqRI{display:inline}
+.QLf5{display:none}
+.zUQW{display:inline}
+</style>203<div style="display:none">89</div>.<span style="display: inline">142</span><span style="display:none">212</span><span class="QLf5">155</span><span></span>.<span style="display: inline">72</span><span class="QLf5">204</span><span></span><span class="" style="">.</span>117</span></td>	
+         <td>
+3128</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7005">
+	<div class="slow" style="width:30%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="361">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103887">
+         <td class="leftborder timestamp" rel="1344718685"><span class="updatets ">1m 27s</span></td>
+         <td><span><style>
+.BxfS{display:none}
+.TxH-{display:inline}
+.zXZf{display:none}
+.NnUS{display:inline}
+.Hcvh{display:none}
+.KtZH{display:inline}
+</style><span class="83">114</span><span style="display:none">70</span><span class="Hcvh">34</span><span class="" style="">.</span>134<span class="zXZf">120</span><span></span><span class="" style="">.</span>75<span style="display:none">90</span><div style="display:none">158</div><span class="" style="">.</span>177</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="9721">
+	<div class="slow" style="width:3%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3407">
+	<div class="slow" style="width:32%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103886">
+         <td class="leftborder timestamp" rel="1344718683"><span class="updatets ">1m 29s</span></td>
+         <td><span><style>
+.LFHj{display:none}
+.tw5o{display:inline}
+</style><span style="display: inline">190</span><span style="display:none">145</span><span class="LFHj">198</span><span class="" style="">.</span><span style="display: inline">40</span><div style="display:none">18</div>.<span class="200">28</span><span style="display:none">251</span>.166</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="pe"><span class="country"><img src="./proxy_files/pe.png" alt="flag"> Peru</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7766">
+	<div class="slow" style="width:22%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3251">
+	<div class="slow" style="width:35%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103885">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.yial{display:none}
+.HCyk{display:inline}
+.kezq{display:none}
+.NqAS{display:inline}
+</style>217<span style="display:none">181</span><div style="display:none">130</div>.<span style="display: inline">11</span><div style="display:none">103</div>.<span style="display: inline">25</span><span class="kezq">158</span><span></span>.<span style="display: inline">82</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="ir"><span class="country"><img src="./proxy_files/ir.png" alt="flag"> Iran</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6264">
+	<div class="medium" style="width:37%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="254">
+	<div class="fast" style="width:95%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103881">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.B3zO{display:none}
+.IN9-{display:inline}
+.h0dO{display:none}
+.brSF{display:inline}
+.YJe2{display:none}
+.uFmK{display:inline}
+</style><span class="202">190</span><span class="YJe2">9</span><div style="display:none">75</div>.<span class="103">203</span><div style="display:none">245</div><span class="" style="">.</span><span style="display: inline">110</span>.61</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="ve"><span class="country"><img src="./proxy_files/ve.png" alt="flag"> Venezuela</span></td>
+         
+         <td> <div class="speedbar response_time" rel="10031">
+	<div class="slow" style="width:2%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="495">
+	<div class="fast" style="width:90%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103882">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.JdmD{display:none}
+.B-IY{display:inline}
+.YeV8{display:none}
+.yVCt{display:inline}
+</style><span class="60">41</span><span class="JdmD">138</span><span class="" style="">.</span><span style="display: inline">35</span><span></span>.<span class="yVCt">48</span><span class="JdmD">190</span><div style="display:none">114</div>.206</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="eg"><span class="country"><img src="./proxy_files/eg.png" alt="flag"> Egypt</span></td>
+         
+         <td> <div class="speedbar response_time" rel="5522">
+	<div class="medium" style="width:45%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="163">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103884">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.TYFu{display:none}
+.PsNm{display:inline}
+.tw45{display:none}
+.L2aD{display:inline}
+.GlvG{display:none}
+.dTPe{display:inline}
+</style><span class="PsNm">61</span><span class="TYFu">24</span><span></span>.<span class="64">7</span><span style="display:none">39</span><span class="GlvG">141</span><div style="display:none">190</div>.<span class="224">180</span><span style="display:none">42</span><div style="display:none">58</div>.39</span></td>	
+         <td>
+3128</td>
+         
+         <td rel="th"><span class="country"><img src="./proxy_files/th.png" alt="flag"> Thailand</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6102">
+	<div class="medium" style="width:39%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="250">
+	<div class="fast" style="width:95%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103880">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.xsEA{display:none}
+.EBNk{display:inline}
+.hbK3{display:none}
+.d-CL{display:inline}
+</style><span class="226">211</span><span style="display:none">74</span><span></span>.154<span style="display:none">98</span><span class="xsEA">142</span>.<span class="249">83</span>.<span class="EBNk">37</span></span></td>	
+         <td>
+82</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="1038">
+	<div class="fast" style="width:90%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="343">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103883">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.yIXF{display:none}
+.A4u2{display:inline}
+.bdaA{display:none}
+.BAQC{display:inline}
+</style><span class="A4u2">201</span>.<span style="display: inline">64</span><span style="display:none">62</span><span></span><span class="" style="">.</span>254<span style="display:none">36</span><span></span>.<span style="display: inline">228</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6536">
+	<div class="slow" style="width:35%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3496">
+	<div class="slow" style="width:30%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103879">
+         <td class="leftborder timestamp" rel="1344718624"><span class="updatets ">2m 28s</span></td>
+         <td><span><style>
+.v_zA{display:none}
+.O_wF{display:inline}
+.rfH4{display:none}
+.HIRW{display:inline}
+.KlRs{display:none}
+.apD5{display:inline}
+</style><span class="220">218</span><span style="display:none">55</span><span class="rfH4">110</span><div style="display:none">251</div>.<span class="O_wF">22</span><span style="display:none">169</span><span class="KlRs">229</span><div style="display:none">137</div>.71<span style="display:none">130</span><span class="v_zA">230</span><span></span>.<span class="217">125</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="984">
+	<div class="fast" style="width:90%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="322">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103878">
+         <td class="leftborder timestamp" rel="1344718623"><span class="updatets ">2m 29s</span></td>
+         <td><span><style>
+.TcpX{display:none}
+.nuNc{display:inline}
+.F8oR{display:none}
+.BNWF{display:inline}
+.g-Vx{display:none}
+.WP2W{display:inline}
+</style><span style="display: inline">220</span><span style="display:none">83</span><span></span>.132<span style="display:none">58</span><span class="F8oR">168</span><div style="display:none">194</div><span class="" style="">.</span>193<span style="display:none">234</span><div style="display:none">216</div><span class="" style="">.</span><span class="WP2W">118</span></span></td>	
+         <td>
+808</td>
+         
+         <td rel="tw"><span class="country"><img src="./proxy_files/tw.png" alt="flag"> Taiwan, Republic of China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="1106">
+	<div class="fast" style="width:89%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="374">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103877">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.EOX1{display:none}
+.ckO9{display:inline}
+.cSdf{display:none}
+.KSWk{display:inline}
+</style><span style="display: inline">190</span><span class="EOX1">7</span><span></span>.<span class="KSWk">225</span><span style="display:none">170</span><span class="EOX1">150</span><div style="display:none">214</div><span class="" style="">.</span>190<span style="display:none">179</span><div style="display:none">92</div>.<span style="display: inline">4</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="ar"><span class="country"><img src="./proxy_files/ar.png" alt="flag"> Argentina</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6115">
+	<div class="medium" style="width:39%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="276">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103872">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.iXyI{display:none}
+.zKtk{display:inline}
+.unhw{display:none}
+.N-hZ{display:inline}
+.YSJo{display:none}
+.Q4Yy{display:inline}
+</style>118<span style="display:none">195</span><div style="display:none">132</div>.174<div style="display:none">53</div>.144<span style="display:none">82</span>.<span style="display: inline">130</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="th"><span class="country"><img src="./proxy_files/th.png" alt="flag"> Thailand</span></td>
+         
+         <td> <div class="speedbar response_time" rel="4776">
+	<div class="medium" style="width:52%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="310">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103871">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.XSds{display:none}
+.CPVQ{display:inline}
+.O-HU{display:none}
+.NlO6{display:inline}
+</style>119<div style="display:none">229</div><span class="" style="">.</span><span class="CPVQ">115</span><div style="display:none">244</div>.136<span style="display:none">12</span><div style="display:none">220</div>.62</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6437">
+	<div class="medium" style="width:36%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="448">
+	<div class="fast" style="width:91%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103874">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.jR6_{display:none}
+.CajH{display:inline}
+.zOkW{display:none}
+.nvVL{display:inline}
+</style><span class="136">114</span><span style="display:none">50</span><span class="jR6_">112</span><span class="" style="">.</span><span class="128">143</span><span style="display:none">70</span><span class="jR6_">158</span><span></span>.<span class="146">12</span><span style="display:none">204</span><div style="display:none">177</div>.<span class="87">28</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="in"><span class="country"><img src="./proxy_files/in.png" alt="flag"> India</span></td>
+         
+         <td> <div class="speedbar response_time" rel="5414">
+	<div class="medium" style="width:46%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="128">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103873">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.E-0U{display:none}
+.d-ni{display:inline}
+.c8xy{display:none}
+.Bu43{display:inline}
+</style>122<span class="E-0U">25</span>.<span class="112">72</span><div style="display:none">6</div>.<span class="d-ni">0</span><span style="display:none">198</span><div style="display:none">95</div>.227</span></td>	
+         <td>
+80</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="4561">
+	<div class="medium" style="width:54%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="438">
+	<div class="fast" style="width:91%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="" rel="12103876">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.ZLHO{display:none}
+.gV-E{display:inline}
+.C6m2{display:none}
+.P86T{display:inline}
+.CBsh{display:none}
+.iX3z{display:inline}
+</style><span class="99">202</span><span class="ZLHO">108</span><div style="display:none">226</div>.<span style="display: inline">148</span><span class="ZLHO">227</span><div style="display:none">19</div>.<span style="display: inline">23</span>.177</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="8719">
+	<div class="slow" style="width:13%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="1118">
+	<div class="fast" style="width:78%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103875">
+         <td class="leftborder timestamp" rel="1344718564"><span class="updatets ">3m 28s</span></td>
+         <td><span><style>
+.naI6{display:none}
+.sH8T{display:inline}
+.UAEU{display:none}
+.xY8F{display:inline}
+</style>187<span></span>.73<span class="UAEU">8</span><span></span><span class="" style="">.</span><span class="105">254</span><span class="UAEU">58</span><div style="display:none">165</div>.<span style="display: inline">28</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7627">
+	<div class="slow" style="width:24%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="475">
+	<div class="fast" style="width:91%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103870">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.wdjH{display:none}
+.JwJD{display:inline}
+</style>122<span style="display:none">196</span><span class="wdjH">147</span><span></span><span class="" style="">.</span><span class="JwJD">72</span><div style="display:none">40</div>.<span class="10">12</span><span class="wdjH">57</span><div style="display:none">166</div>.<span class="120">90</span></span></td>	
+         <td>
+80</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="5909">
+	<div class="medium" style="width:41%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="392">
+	<div class="fast" style="width:92%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103865">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.tcEB{display:none}
+.Xu9R{display:inline}
+.UlC2{display:none}
+.yy6w{display:inline}
+</style><span class="126">217</span><span></span>.<span class="248">219</span><span class="tcEB">99</span><div style="display:none">87</div>.175<div style="display:none">229</div>.69</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="ir"><span class="country"><img src="./proxy_files/ir.png" alt="flag"> Iran</span></td>
+         
+         <td> <div class="speedbar response_time" rel="9721">
+	<div class="slow" style="width:3%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="140">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High</td>
+         
+         </tr>
+  <tr class="" rel="12103864">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.muca{display:none}
+.u80w{display:inline}
+</style><span class="116">203</span><div style="display:none">128</div>.66<span></span>.<span class="66">187</span><div style="display:none">78</div>.<span class="u80w">242</span></span></td>	
+         <td>
+80</td>
+         
+         <td rel="tw"><span class="country"><img src="./proxy_files/tw.png" alt="flag"> Taiwan, Republic of China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6184">
+	<div class="medium" style="width:38%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="312">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103868">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.gvwb{display:none}
+.nGCx{display:inline}
+</style><span class="58">203</span><span style="display:none">196</span><div style="display:none">200</div>.<span class="nGCx">201</span><div style="display:none">62</div>.<span class="nGCx">168</span><div style="display:none">207</div><span class="" style="">.</span><span class="181">10</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7707">
+	<div class="slow" style="width:23%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="1233">
+	<div class="fast" style="width:75%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103867">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.eUvp{display:none}
+.iQmV{display:inline}
+.JRu2{display:none}
+.BZLo{display:inline}
+</style><span style="display: inline">94</span><span class="JRu2">207</span>.155<span style="display:none">171</span><span class="JRu2">187</span><div style="display:none">145</div>.<span class="252">51</span><span></span>.112</span></td>	
+         <td>
+8080</td>
+         
+         <td rel="bg"><span class="country"><img src="./proxy_files/bg.png" alt="flag"> Bulgaria</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6790">
+	<div class="slow" style="width:32%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="45">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103866">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.kyz7{display:none}
+.Y4gJ{display:inline}
+.C3uV{display:none}
+.Vi_6{display:inline}
+.EKvu{display:none}
+.cW57{display:inline}
+</style>91<span class="EKvu">70</span><div style="display:none">64</div><span class="" style="">.</span><span style="display: inline">98</span><div style="display:none">62</div>.126<span class="kyz7">233</span>.<span style="display: inline">26</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="ir"><span class="country"><img src="./proxy_files/ir.png" alt="flag"> Iran</span></td>
+         
+         <td> <div class="speedbar response_time" rel="12379">
+	<div class="slow" style="width:2%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="964">
+	<div class="fast" style="width:81%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103869">
+         <td class="leftborder timestamp" rel="1344718505"><span class="updatets ">4m 27s</span></td>
+         <td><span><style>
+.T3J-{display:none}
+.bWHS{display:inline}
+.bdRh{display:none}
+.B3o6{display:inline}
+.wjGT{display:none}
+.h7y1{display:inline}
+</style>202<span class="wjGT">239</span>.<span style="display: inline">113</span><span style="display:none">137</span><span></span>.<span style="display: inline">64</span><span class="" style="">.</span><span class="38">219</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="1022">
+	<div class="fast" style="width:90%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="355">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>socks4/5</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103862">
+         <td class="leftborder timestamp" rel="1344718445"><span class="updatets ">5m 27s</span></td>
+         <td><span><style>
+.jO1N{display:none}
+.Arx8{display:inline}
+</style><span class="215">176</span><span style="display:none">104</span><span class="jO1N">170</span><div style="display:none">7</div>.34<span class="jO1N">34</span><span class="" style="">.</span><span style="display: inline">248</span><span style="display:none">67</span><span class="jO1N">247</span><div style="display:none">9</div><span class="" style="">.</span><span class="233">142</span></span></td>	
+         <td>
+9050</td>
+         
+         <td rel="us"><span class="country"><img src="./proxy_files/us.png" alt="flag"> United States</span></td>
+         
+         <td> <div class="speedbar response_time" rel="2949">
+	<div class="fast" style="width:71%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="43">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>socks4/5</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103861">
+         <td class="leftborder timestamp" rel="1344718445"><span class="updatets ">5m 27s</span></td>
+         <td><span><style>
+.UYfj{display:none}
+.cmBs{display:inline}
+</style><span class="cmBs">54</span><span style="display:none">40</span><span class="UYfj">163</span><span class="" style="">.</span><span style="display: inline">247</span><span class="UYfj">145</span>.<span class="50">118</span><div style="display:none">133</div>.<span class="45">215</span></span></td>	
+         <td>
+80</td>
+         
+         <td rel="us"><span class="country"><img src="./proxy_files/us.png" alt="flag"> United States</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7588">
+	<div class="slow" style="width:24%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3040">
+	<div class="medium" style="width:39%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103860">
+         <td class="leftborder timestamp" rel="1344718445"><span class="updatets ">5m 27s</span></td>
+         <td><span><style>
+.yRXf{display:none}
+.Yx5p{display:inline}
+</style>187<span class="yRXf">83</span><div style="display:none">209</div>.14<span style="display:none">130</span><span></span>.<span style="display: inline">141</span><span style="display:none">220</span><span class="yRXf">233</span><div style="display:none">232</div>.<span class="162">47</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td>
+         
+         <td> <div class="speedbar response_time" rel="8406">
+	<div class="slow" style="width:16%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="1462">
+	<div class="fast" style="width:71%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103863">
+         <td class="leftborder timestamp" rel="1344718445"><span class="updatets ">5m 27s</span></td>
+         <td><span><style>
+.VF_h{display:none}
+.JKZA{display:inline}
+</style><span style="display: inline">118</span>.85<div style="display:none">222</div>.<span class="JKZA">207</span><span class="VF_h">192</span><span></span>.<span class="JKZA">23</span></span></td>	
+         <td>
+80</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="8492">
+	<div class="slow" style="width:15%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="307">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103859">
+         <td class="leftborder timestamp" rel="1344718444"><span class="updatets ">5m 28s</span></td>
+         <td><span><style>
+.GIZU{display:none}
+.X-9K{display:inline}
+.QXlJ{display:none}
+.WxHc{display:inline}
+</style><span style="display: inline">59</span><div style="display:none">79</div><span class="" style="">.</span><span style="display: inline">172</span><span class="QXlJ">218</span><div style="display:none">143</div>.208<span class="GIZU">27</span><div style="display:none">102</div>.<span class="WxHc">187</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6908">
+	<div class="slow" style="width:31%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3394">
+	<div class="slow" style="width:32%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103856">
+         <td class="leftborder timestamp" rel="1344718384"><span class="updatets ">6m 28s</span></td>
+         <td><span><style>
+.zDPz{display:none}
+.d-fE{display:inline}
+.Wde5{display:none}
+.x_kv{display:inline}
+</style><span style="display: inline">202</span><div style="display:none">185</div>.<span class="158">152</span><span class="Wde5">101</span><div style="display:none">178</div>.21<div style="display:none">104</div>.<span class="x_kv">90</span></span></td>	
+         <td>
+3129</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7274">
+	<div class="slow" style="width:27%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="345">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103857">
+         <td class="leftborder timestamp" rel="1344718384"><span class="updatets ">6m 28s</span></td>
+         <td><span><style>
+.hO2R{display:none}
+.D0rf{display:inline}
+.zO3f{display:none}
+.JEC6{display:inline}
+.w_r5{display:none}
+.nZVD{display:inline}
+</style><span style="display: inline">186</span><span style="display:none">177</span><div style="display:none">193</div>.<span style="display: inline">208</span><span style="display:none">192</span><span class="zO3f">221</span><div style="display:none">65</div>.<span style="display: inline">12</span><div style="display:none">122</div>.<span class="JEC6">58</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="br"><span class="country"><img src="./proxy_files/br.png" alt="flag"> Brazil</span></td>
+         
+         <td> <div class="speedbar response_time" rel="7484">
+	<div class="slow" style="width:25%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="345">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103858">
+         <td class="leftborder timestamp" rel="1344718384"><span class="updatets ">6m 28s</span></td>
+         <td><span><style>
+.lUHl{display:none}
+.FdKW{display:inline}
+.i2lg{display:none}
+.wUF3{display:inline}
+</style><span style="display: inline">203</span><div style="display:none">220</div>.<span class="wUF3">114</span><span class="lUHl">213</span><div style="display:none">231</div><span class="" style="">.</span>112<span style="display:none">242</span><span></span><span class="" style="">.</span><span style="display: inline">101</span></span></td>	
+         <td>
+3128</td>
+         
+         <td rel="th"><span class="country"><img src="./proxy_files/th.png" alt="flag"> Thailand</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6508">
+	<div class="slow" style="width:35%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="320">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103855">
+         <td class="leftborder timestamp" rel="1344718383"><span class="updatets ">6m 29s</span></td>
+         <td><span><style>
+.vhN3{display:none}
+.SDZm{display:inline}
+</style><span style="display: inline">203</span><span style="display:none">200</span><span class="vhN3">192</span><div style="display:none">110</div>.<span style="display: inline">198</span><span class="vhN3">182</span>.<span class="233">23</span><span style="display:none">97</span><span class="vhN3">208</span>.<span class="108">82</span></span></td>	
+         <td>
+9090</td>
+         
+         <td rel="hk"><span class="country"><img src="./proxy_files/hk.png" alt="flag"> Hong Kong</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6207">
+	<div class="medium" style="width:38%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="332">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">High</td>
+         
+         </tr>
+  <tr class="" rel="12103853">
+         <td class="leftborder timestamp" rel="1344718325"><span class="updatets ">7m 27s</span></td>
+         <td><span><style>
+.m_PG{display:none}
+.szg9{display:inline}
+.jSxN{display:none}
+.hlzA{display:inline}
+</style>110<span class="m_PG">7</span><div style="display:none">134</div>.138<span class="jSxN">90</span><span class="" style="">.</span><span style="display: inline">215</span>.<span class="93">48</span></span></td>	
+         <td>
+8085</td>
+         
+         <td rel="id"><span class="country"><img src="./proxy_files/id.png" alt="flag"> Indonesia</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6521">
+	<div class="slow" style="width:35%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3366">
+	<div class="slow" style="width:33%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103854">
+         <td class="leftborder timestamp" rel="1344718325"><span class="updatets ">7m 27s</span></td>
+         <td><span><style>
+.blCH{display:none}
+.SnDk{display:inline}
+</style><span class="83">120</span><span></span><span class="" style="">.</span><span style="display: inline">90</span><div style="display:none">134</div>.11<span style="display:none">209</span><span class="blCH">34</span><span></span><span class="" style="">.</span><span class="192">82</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6031">
+	<div class="medium" style="width:40%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="336">
+	<div class="fast" style="width:93%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="" rel="12103852">
+         <td class="leftborder timestamp" rel="1344718325"><span class="updatets ">7m 27s</span></td>
+         <td><span><style>
+.K3yU{display:none}
+.p4uj{display:inline}
+</style><span class="p4uj">200</span><span class="K3yU">137</span><div style="display:none">232</div>.24<div style="display:none">17</div>.<span class="p4uj">218</span><span class="K3yU">87</span><div style="display:none">205</div>.51</span></td>	
+         <td>
+3128</td>
+         
+         <td rel="ec"><span class="country"><img src="./proxy_files/ec.png" alt="flag"> Ecuador</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6107">
+	<div class="medium" style="width:39%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="192">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103849">
+         <td class="leftborder timestamp" rel="1344718265"><span class="updatets ">8m 27s</span></td>
+         <td><span><style>
+.m2ZR{display:none}
+.Vb9r{display:inline}
+.lZ0t{display:none}
+.Dn_7{display:inline}
+.feLU{display:none}
+.GD1O{display:inline}
+</style><span class="210">190</span>.<span style="display: inline">111</span><span style="display:none">127</span><span class="feLU">217</span><span></span>.<span class="201">17</span><span style="display:none">164</span><span class="" style="">.</span><span class="Vb9r">161</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="gt"><span class="country"><img src="./proxy_files/gt.png" alt="flag"> Guatemala</span></td>
+         
+         <td> <div class="speedbar response_time" rel="5651">
+	<div class="medium" style="width:43%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3155">
+	<div class="medium" style="width:37%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="" rel="12103850">
+         <td class="leftborder timestamp" rel="1344718265"><span class="updatets ">8m 27s</span></td>
+         <td><span><style>
+.kD1I{display:none}
+.DtkL{display:inline}
+.EAh_{display:none}
+.kKdO{display:inline}
+</style>103.<span class="77">4</span><span style="display:none">171</span><span class="EAh_">202</span><div style="display:none">202</div><span class="" style="">.</span><span class="DtkL">146</span><span style="display:none">127</span>.<span class="kKdO">250</span></span></td>	
+         <td>
+443</td>
+         
+         <td rel="bd"><span class="country"><img src="./proxy_files/bd.png" alt="flag"> Bangladesh</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6189">
+	<div class="medium" style="width:38%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="283">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103848">
+         <td class="leftborder timestamp" rel="1344718265"><span class="updatets ">8m 27s</span></td>
+         <td><span><style>
+.i0ZX{display:none}
+.iedN{display:inline}
+.sHhU{display:none}
+.Qv-L{display:inline}
+.fBE7{display:none}
+.kgLQ{display:inline}
+</style>218<span style="display:none">107</span><span class="i0ZX">97</span><div style="display:none">175</div>.247<span style="display:none">175</span><span class="fBE7">63</span><div style="display:none">240</div>.<span style="display: inline">129</span><div style="display:none">41</div><span class="" style="">.</span>3</span></td>	
+         <td>
+80</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="8805">
+	<div class="slow" style="width:12%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="452">
+	<div class="fast" style="width:91%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  <tr class="" rel="12103847">
+         <td class="leftborder timestamp" rel="1344718264"><span class="updatets ">8m 28s</span></td>
+         <td><span><style>
+.wTHL{display:none}
+.oC15{display:inline}
+</style><span style="display: inline">94</span><div style="display:none">83</div>.<span class="oC15">56</span><span class="wTHL">248</span><div style="display:none">209</div>.<span style="display: inline">129</span><span style="display:none">209</span><span></span>.<span class="oC15">24</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="ae"><span class="country"><img src="./proxy_files/ae.png" alt="flag"> United Arab Emirates</span></td>
+         
+         <td> <div class="speedbar response_time" rel="8585">
+	<div class="slow" style="width:14%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="198">
+	<div class="fast" style="width:100%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103845">
+         <td class="leftborder timestamp" rel="1344718202"><span class="updatets ">9m 30s</span></td>
+         <td><span><style>
+.q9UK{display:none}
+.oi9s{display:inline}
+.HR5G{display:none}
+.hiW4{display:inline}
+</style><span style="display: inline">109</span><span class="HR5G">165</span><div style="display:none">28</div>.<span class="oi9s">205</span><span style="display:none">169</span><span class="" style="">.</span><span class="oi9s">117</span><span style="display:none">191</span><span class="q9UK">82</span><span></span><span class="" style="">.</span><span style="display: inline">226</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="iq"><span class="country"><img src="./proxy_files/iq.png" alt="flag"> Iraq</span></td>
+         
+         <td> <div class="speedbar response_time" rel="5656">
+	<div class="medium" style="width:43%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="3117">
+	<div class="medium" style="width:38%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="" rel="12103846">
+         <td class="leftborder timestamp" rel="1344718202"><span class="updatets ">9m 30s</span></td>
+         <td><span><style>
+.fxvw{display:none}
+.AYpi{display:inline}
+.yGLS{display:none}
+.digT{display:inline}
+</style><span style="display: inline">190</span><span style="display:none">47</span><span class="yGLS">235</span><div style="display:none">206</div><span class="" style="">.</span><span style="display: inline">52</span><span class="fxvw">159</span><div style="display:none">168</div>.<span style="display: inline">56</span><span style="display:none">28</span><span></span>.<span style="display: inline">251</span></span></td>	
+         <td>
+8080</td>
+         
+         <td rel="ar"><span class="country"><img src="./proxy_files/ar.png" alt="flag"> Argentina</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6160">
+	<div class="medium" style="width:38%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="278">
+	<div class="fast" style="width:94%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTPS</td>
+             <td class="rightborder">High +KA</td>
+         
+         </tr>
+  <tr class="altshade" rel="12103841">
+         <td class="leftborder timestamp" rel="1344718202"><span class="updatets ">9m 30s</span></td>
+         <td><span><style>
+.uEPH{display:none}
+.KVjO{display:inline}
+.y6_P{display:none}
+.xs3C{display:inline}
+</style>122<span></span><span class="" style="">.</span>72<span class="uEPH">119</span><span></span>.<span class="177">20</span><span style="display:none">95</span><span class="uEPH">241</span><div style="display:none">140</div><span class="" style="">.</span><span style="display: inline">127</span></span></td>	
+         <td>
+80</td>
+         
+         <td rel="cn"><span class="country"><img src="./proxy_files/cn.png" alt="flag"> China</span></td>
+         
+         <td> <div class="speedbar response_time" rel="6363">
+	<div class="medium" style="width:36%"> </div>
+		</div>
+         </td>
+             <td> <div class="speedbar connection_time" rel="725">
+	<div class="fast" style="width:86%"> </div>
+              
+		</div>
+             </td>
+      
+             <td>HTTP</td>
+             <td class="rightborder">Low</td>
+         
+         </tr>
+  
+  
+  
+  
+  
+  
+		</tbody></table>
+		<div id="pagination">
+			<ul> 
+ <div class="pagination"><li class="inactivepagination previouspageinactive">« Previous</li><li class="inactivepagination">1</li><li><a href="http://www.hidemyass.com/proxy-list/2">2</a></li><li><a href="http://www.hidemyass.com/proxy-list/3">3</a></li><li><a href="http://www.hidemyass.com/proxy-list/4">4</a></li><li><a href="http://www.hidemyass.com/proxy-list/5">5</a></li><li><a href="http://www.hidemyass.com/proxy-list/6">6</a></li><li><a href="http://www.hidemyass.com/proxy-list/7">7</a></li><li><a href="http://www.hidemyass.com/proxy-list/8">8</a></li><li><a href="http://www.hidemyass.com/proxy-list/9">9</a></li><li><a href="http://www.hidemyass.com/proxy-list/10">10</a></li><li><a href="http://www.hidemyass.com/proxy-list/11">11</a></li><li><a href="http://www.hidemyass.com/proxy-list/12">12</a></li><li><a href="http://www.hidemyass.com/proxy-list/13">13</a></li><li><a href="http://www.hidemyass.com/proxy-list/14">14</a></li><li><a href="http://www.hidemyass.com/proxy-list/15">15</a></li><li><a href="http://www.hidemyass.com/proxy-list/16">16</a></li><li><a href="http://www.hidemyass.com/proxy-list/17">17</a></li><li>...</li><li><a href="http://www.hidemyass.com/proxy-list/45">45</a></li><li><a href="http://www.hidemyass.com/proxy-list/46">46</a></li><li class="nextpageactive"><a href="http://www.hidemyass.com/proxy-list/2" class="next">Next »</a></li></div>
+			</ul> 
+		</div>
+		<!-- End pagination -->
+		
+		<div id="instructions">
+			<div id="instructionswrapper">
+				<h3>Proxy list instructions and notes</h3>
+				<h4>Web browser instructions</h4>
+				<ul>
+					<li><strong>Mozilla Firefox:</strong> Tools &gt; Options &gt; Advanced &gt; Settings &gt; Manual proxy configuration.</li>
+					<li><strong>Google Chrome:</strong> Options &gt; Under the hood &gt; Network &gt; Change proxy settings &gt; LAN settings &gt; Use a proxy server &gt; Advanced &gt; HTTP.</li>
+					<li><strong>Internet Explorer:</strong> Tools &gt; Internet options &gt; Connections &gt; LAN settings &gt; Use a proxy server &gt; Advanced &gt; HTTP.</li>
+					<li><strong>Opera:</strong> Tools &gt; Preferences &gt; Advanced &gt; Network.</li>
+				</ul>
+				<h4>Anonymity levels</h4>
+				<ul>
+					<li><strong>Level 1:</strong> No anonymity; remote host knows your IP and knows you are using proxy.</li>
+					<li><strong>Level 4:</strong> Low anonymity; remote host does not know your IP, but it knows you are using proxy.</li>
+					<li><strong>Level 8:</strong> Medium anonymity; remote host knows you are using proxy, and thinks it knows your IP, but this is not yours (this is usually a multihomed proxy which shows its inbound interface as REMOTE_ADDR for a target host).</li>
+					<li><strong>Level 16:</strong> High anonymity; remote host does not know your IP and has no direct proof of proxy usage (proxy-connection family header strings). If such hosts do not send additional header strings it may be considered as high-anonymous. If a high-anonymous proxy supports keep-alive you can consider it to be extremely-anonymous. However, such a host is highly possible to be a honey-pot.</li>
+				</ul>
+				<h4>Planet Lab / CoDeeN</h4>
+				<p>PlanetLab proxy servers marked with <span id="plicon">a</span> icon are from the Planetlab CoDeeN (CDN) Project, a network of educational Internet nodes at Princeton University. These proxies may force a captcha and allocate you a different IP address as advertised.</p>
+				<h4>Security notes</h4>
+				<p>Our proxy list database consists of third-party 'open proxies'; proxy servers set up for public use. We have absolutely NO control over any of these proxy servers and can not vouch for security, therefore USE OUR DATABASE AT YOUR OWN RISK. For a guaranteed secured encrypted connection, private servers in our control, reliable fast speeds and multiple servers world-wide we recommend you use our <a href="http://www.hidemyass.com/vpn/">VPN service</a>.</p>
+			</div>
+			<!-- End instructionswrapper -->
+		</div>
+		<!-- End instructions -->
+<div id="instructionsbottom"></div>		
+	</div>
+	<!-- End container -->
+	
+	<div id="footer">	
+		<div id="footercontainer">
+			<ul id="footermenu">
+				<li id="adjustedleftpadding">
+					<ul>
+						<li><h3>Latest blog posts</h3></li>
+
+    
+						<li><a href="http://blog.hidemyass.com/?guid=6b9aef36b9a6c45bfa6d50cc95d70613">Real internet freedom –...</a><br><em>9th Aug 2012</em></li>
+						<li><a href="http://blog.hidemyass.com/?guid=73787461736fd013c4d975d2580be46a">Olympic fans battle NBC w...</a><br><em>6th Aug 2012</em></li>
+						<li><a href="http://blog.hidemyass.com/?guid=73787461736fd013c4d975d2580be46a">Olympic fans battle NBC w...</a><br><em>6th Aug 2012</em></li>
+						<li><a href="http://blog.hidemyass.com/?guid=e4130856e8f98a35dc23e38f90e9706e">Spambot shutdown highligh...</a><br><em>3rd Aug 2012</em></li>					</ul>
+				</li>
+				<li>
+					<ul>
+						<li><h3>Latest community topics</h3></li>
+
+						<li><a href="http://forum.hidemyass.com/index.php?/topic/8002-watch-henderson-vs-edgar-live-streaming-ufc-150-for-free">Watch Henderson Vs Edgar ...</a><br><em>11th Aug 2012</em></li>
+						<li><a href="http://forum.hidemyass.com/index.php?/topic/8001-vpn-and-router-with-saving-browsed-site-function">VPN and router with savin...</a><br><em>11th Aug 2012</em></li>
+						<li><a href="http://forum.hidemyass.com/index.php?/topic/8000-watch-houston-vs-carolina-live-nfl-streaming-on-tv-link">Watch Houston vs Carolina...</a><br><em>11th Aug 2012</em></li>
+						<li><a href="http://forum.hidemyass.com/index.php?/topic/7999-watch-ufc-150-live-henderson-vs-edgar-live-online-mma-stream">Watch UFC 150 Live : Hend...</a><br><em>11th Aug 2012</em></li>					</ul>
+				</li>
+				<li id="footersitemap">
+					<ul>
+						<li id="adjustedbottompadding"><h3>Hide My Ass!</h3></li>
+						<li><a href="http://www.hidemyass.com/vpn/">Pro VPN</a></li>
+						<li><a href="http://www.hidemyass.com/proxy/">Free web proxy</a></li>
+						<li><a href="./proxy_files/proxy.html">IP:PORT proxies</a></li>
+						<li><a href="http://www.hidemyass.com/anonymous-email/">Anonymous Email</a></li>
+						<li><a href="http://www.hidemyass.com/software/">Privacy software</a></li>
+						<li><a href="http://www.hidemyass.com/upload/">File upload</a></li>
+						<li><a href="http://www.hidemyass.com/anonymous-referrer/">Anonymous Referrer</a></li>
+					</ul>
+				</li>				
+			</ul>			
+			<div id="footerbottom">
+				<small>Copyright 2005-2012 Privax LTD. All Rights reserved.</small>
+				<ul>
+					<li><a href="http://forum.hidemyass.com/">Community</a></li>
+					<li><a href="http://blog.hidemyass.com/">Blog</a></li>
+					<li><a href="http://twitter.com/hidemyass/">Twitter</a></li>
+<li><a href="http://www.hidemyass.com/jobs/">Jobs</a></li>					
+<li><a href="https://affiliate.hidemyass.com/">Affiliate</a></li>
+<li><a href="http://www.hidemyass.com/contact/">Contact</a></li>
+<li><a href="http://www.hidemyass.com/legal/">Legal</a></li>
+					<li id="footerbottompaddingadjustment"><a href="http://www.hidemyass.com/site-map/">Site map</a></li>
+				</ul>
+			</div>
+			<!-- End footerbottom -->		
+		</div>
+		<!-- End footercontainer -->	
+	</div>
+	<!-- End footercontainer -->
+
+</div>
+<!-- End homebg -->
+
+
+<div id="GOOGLE_INPUT_CHEXT_FLAG" style="display: none; "></div><div class="vk-box" id="kbd" style="width: 495px; -webkit-user-select: none; left: 832px; top: 469px; display: none; " tabindex="-1"><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><div width="100%" dir="ltr" style="-webkit-user-select: none; "><div class="vk-t" style="text-align: left; -webkit-user-select: none; ">বাংলা(ফোনেটিক)</div><div class="vk-t-btn-o vk-sf-cl" style="right: 0px; padding-right: 14px; -webkit-user-select: none; "><div class="vk-t-btn vk-sf-cl" style="-webkit-user-select: none; "></div></div><div class="vk-t-btn-o vk-sf-min" style="right: 32px; -webkit-user-select: none; display: block; "><div class="vk-t-btn vk-sf-min" style="-webkit-user-select: none; "></div></div><div class="vk-t-btn-o vk-sf-max" style="right: 32px; -webkit-user-select: none; display: none; "><div class="vk-t-btn vk-sf-max" style="-webkit-user-select: none; "></div></div></div></td></tr><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; direction: ltr; -webkit-user-select: none; display: block; " dir="ltr"><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K192" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">`</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K49" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">1</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K50" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">2</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K51" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">3</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K52" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">4</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K53" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">5</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K54" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">6</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K55" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">7</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K56" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">8</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K57" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">9</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K48" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">0</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K189" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">-</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K187" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">=</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K8" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 62px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-b vk-sf-c8"></span></button></td></tr></tbody></table></td></tr><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K9" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 45.5px; height: 29px; visibility: hidden; -webkit-user-select: none; "></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K81" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">q</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K87" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">w</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K69" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">e</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K82" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">r</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K84" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">t</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K89" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">y</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K85" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">u</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K73" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">i</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K79" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">o</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K80" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">p</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K219" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">[</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K221" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">]</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K220" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 45.5px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">\</span></button></td></tr></tbody></table></td></tr><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K20" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 53.75px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-b vk-sf-c20" style="-webkit-user-select: none; "></span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K65" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">a</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K83" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">s</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K68" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">d</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K70" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">f</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K71" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">g</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K72" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">h</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K74" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">j</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K75" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">k</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K76" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">l</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K186" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">;</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K222" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">'</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K13" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 70.25px; height: 29px; visibility: hidden; -webkit-user-select: none; "></button></td></tr></tbody></table></td></tr><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K16" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 70.25px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-b vk-sf-c16" style="-webkit-user-select: none; "></span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K90" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">z</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K88" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">x</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K67" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">c</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K86" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">v</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K66" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">b</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K78" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">n</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K77" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">m</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K188" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">,</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K190" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">.</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K191" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 29px; height: 29px; -webkit-user-select: none; "><span class="vk-cap">/</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K16" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 86.75px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-b vk-sf-c16" style="-webkit-user-select: none; "></span></button></td></tr></tbody></table></td></tr><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; -webkit-user-select: none; "><tbody style="-webkit-user-select: none; "><tr style="-webkit-user-select: none; "><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K273" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 95px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-c273" style="-webkit-user-select: none; ">Ctrl + Alt</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K32" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 293px; height: 29px; -webkit-user-select: none; "><span style="visibility: hidden; ">.</span></button></td><td style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; border-image: initial; -webkit-user-select: none; "><button id="K273" type="button" class="vk-btn" style="margin-top: 2px; margin-right: 2px; margin-bottom: 2px; margin-left: 2px; width: 95px; height: 29px; -webkit-user-select: none; "><span class="vk-cap vk-sf-c273" style="-webkit-user-select: none; ">Ctrl + Alt</span></button></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div></body></html>

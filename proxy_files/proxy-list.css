@@ -1,0 +1,453 @@
+/*
+########################################################
+PROXY LIST
+	1. Sub heading
+	2. Intro
+	3. Form
+	4. Table
+	5. Pagination
+	6. Instructions
+########################################################
+*/
+
+/*
+########################################################
+1. Sub heading
+########################################################
+*/
+
+.subheadingproxylist h1{
+	width:409px;
+	background:url(/img/proxy-list/translations/english-24.png) no-repeat;
+	height:39px;
+	margin-top:5px;
+}
+
+.subheadingproxylist p{margin-bottom:6px;}
+
+/*
+########################################################
+2. Intro
+########################################################
+*/
+
+#proxylisttopleft{
+	width:600px;
+	float:left;
+}
+
+#proxylisttopleft h2{
+	width:564px;
+	height:25px;
+	background:url(/img/proxy-list/translations/english.png) no-repeat;
+	margin-bottom:13px;
+}
+
+#proxylisttopleft p{margin-bottom:10px;}
+
+#premiumpromo{
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -678px;
+	width:300px;
+	float:right;
+}
+
+.enforlife{
+	padding:15px 10px 10px 20px;
+	background:url(/img/proxy-list/translations/english.png) no-repeat 199px -170px;
+	text-indent:0;
+}
+
+#premiumpromo p{margin:15px 40px 17px 0;}
+
+.enh3gopremium{
+	width:172px;
+	height:26px;
+	background:url(/img/proxy-list/translations/english.png) no-repeat 0 -25px;
+}
+#premiumpromo a, #premiumpromo a:visited{
+	color:#5B8F2B;
+	font-weight:bold;
+	background:url(/img/proxy-list/elements.png) no-repeat right -730px;
+	padding-right:10px;
+}
+
+#premiumpromo span{
+	background:url(/img/proxy-list/elements.png) no-repeat -678px -832px;
+	display:block;
+	padding:10px 0 0 0;
+}
+
+#premiumpromobottom{
+	width:300px;
+	height:3px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -985px;
+}
+/*
+########################################################
+3. Form
+########################################################
+*/
+
+#formbox{
+	float:left;
+	width:940px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -988px;
+	margin:37px 0 0 0;
+}
+
+#formbox #formboxwrapper{
+	background:url(/img/proxy-list/elements.png) no-repeat 0 bottom;
+	padding:10px 0 10px 0;
+	overflow:hidden;
+	font-size:12px;
+}
+
+#formbox ul.proxyform  li{
+	float:left;
+	padding:0 20px 0 20px;
+	border-right:1px solid #ccc;
+	min-height:179px;
+	width: auto;
+    _width: 0;
+	white-space: nowrap;
+}
+
+#formbox ul.proxyform li ul li, #formbox ul.proxyform li ul li ul li{
+	padding:0;
+	border-right:0;
+	min-height:auto;
+}
+
+#formbox legend,
+#formbox label,
+#formbox small{
+	display:block;
+}
+
+#formbox legend{
+	font-weight:bold;
+	font-size:14px;
+	padding-bottom:7px;
+}
+
+#formbox .textinput{
+	border:1px solid #cccccc;
+	height:25px;
+	padding:0 5px 0 5px;
+	font-size:12px;
+	width:145px;
+	margin:10px 0 10px 0;
+	background:url(/img/proxy-list/elements.png) -307px -678px;
+	color:#424242;
+}
+
+#formbox .selectmultiple{
+	height:100px;
+	width:210px;
+	margin:10px 0 10px 0;
+	padding:1px 0 1px 1px;
+}
+
+#listsort a, #listsort a:visited{
+	color:#5B8F2B;
+	font-size:11px;
+}
+
+#listsort{color: #a0a0a0;}
+
+#submitbuttons{
+	float:right;
+	margin-right:8px;
+}
+
+.pauserefresh{
+	padding:0;
+	border:0;
+	margin:0;
+	background:url(/img/proxy-list/translations/english.png) -158px -77px;
+	width:140px;
+	height:31px;
+	line-height:100px;
+	cursor:pointer;
+	font-size:0;
+}
+
+.pauserefresh:hover{background:url(/img/proxy-list/translations/english.png) -158px -108px;}
+
+.unpauserefresh{
+	background:url(/img/proxy-list/translations/english.png) 0 -77px;
+	width:158px;
+}
+
+.unpauserefresh:hover{background:url(/img/proxy-list/translations/english.png) 0 -108px;}
+
+#updateresults{
+	padding:0;
+	border:0;
+	margin:0;
+	background:url(/img/proxy-list/translations/english.png) 0 -139px;
+	width:145px;
+	height:31px;
+	line-height:100px;
+	font-size:0;
+	cursor:pointer;
+}
+
+#updateresults:hover{background:url(/img/proxy-list/translations/english.png) -145px -139px;}
+
+.extrapadding{margin-top:7px;}
+
+#formbox #submitbar{
+	float:left;border-top:1px solid #ccc;
+	width:938px;
+	padding:0 1px 0 1px;
+	margin-top:15px;
+}
+#formbox #submitbar #submitbarsecondborder{
+	border-top:1px solid #fff;
+	padding:10px 0 0 20px;
+}
+
+#formbox #submitbar select{
+	border:1px solid #cccccc;
+	font-size:12px;
+	padding:3px;
+}
+
+#formbox #norightborder{
+	border-right:0;
+	padding-right:0;
+}
+
+#formbox #submitbar #sortform li{margin-top:4px;}
+
+#submitbar li{
+	float:left;
+	padding:0 10px 0 0;
+}
+
+#submitbar label{
+	float:left;
+	margin:5px 10px 0 0;
+}
+
+#searchbox{
+	width:920px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -988px;
+	float:left;
+	font-size:12px;
+	padding:10px;
+	margin:20px 0 0 0;
+}
+
+#searchbox h3{
+	font-size:14px;
+	margin:0 0 5px 0;
+}
+
+#searchboxfooter{
+	width:940px;
+	height:3px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -1193px;
+	float:left;
+}
+
+/*
+########################################################
+4. Table
+########################################################
+*/
+
+#listtable{
+	overflow:hidden;
+	float:left;
+	width:940px;
+	margin-top:20px;
+	font-size:12px;
+}
+
+#listtable td{
+	padding:8px;
+	border-bottom:1px solid #bebebe;
+}
+
+#listtable td.leftborder{border-left:1px solid #bebebe;}
+#listtable td.rightborder{border-right:1px solid #bebebe;}
+
+#theader td{
+	background:url(/img/proxy-list/elements.png) no-repeat -100px 0;
+	height:50px;
+	border:0;
+	padding:0 8px 0 8px;
+	font-weight:bold;
+	font-size:14px;
+}
+
+#theader td#theaderright{background:url(/img/proxy-list/elements.png) no-repeat right 0;}
+#theader td#theaderleft{background:url(/img/proxy-list/elements.png) no-repeat 0 0;}
+
+.altshade{background:#f9f9f7;}
+
+.speedbar{
+	width:100px;
+	height:12px;
+	background:url(/img/proxy-list/elements.png) no-repeat -619px -678px;
+}
+
+.speedbar .fast{
+	background:url(/img/proxy-list/elements.png) no-repeat -619px -702px;
+	height:12px;
+	border-right:1px solid #73a644;
+}
+
+.speedbar .medium{
+	background:url(/img/proxy-list/elements.png) no-repeat -619px -690px;
+	height:12px;
+	border-right:1px solid #e0ac1d;
+}
+
+.speedbar .slow{
+	background:url(/img/proxy-list/elements.png) no-repeat -619px -714px;
+	height:12px;
+	border-right:1px solid #bf2d06;
+}
+
+.planetlab{
+	background:url(/img/proxy-list/elements.png) no-repeat right -916px;
+	padding:2px 25px 0 0;
+	display:block;
+	width:114px;
+}
+
+.newproxy{
+	background:url(/img/proxy-list/elements.png) no-repeat -619px -744px;
+	height:18px;
+	padding:2px 0 0 42px;
+	display:block;
+}
+
+/*
+########################################################
+5. Pagination
+########################################################
+*/
+  
+#pagination{
+	height:39px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -50px;
+	clear:both;
+	float:left;
+	width:100%;
+	overflow:hidden;
+	padding:10px 0 0 0;
+}
+
+#pagination ul{
+	padding:0; 
+	margin:0 auto; 
+	float:left;
+	position:relative; 
+	left:50%;
+}
+
+#pagination li{
+	padding-right:4px;
+	float:left;
+	position:relative;
+	right:50%;
+}
+ 
+#pagination li a{
+	background:url(/img/proxy-list/elements.png) no-repeat -541px -678px;
+	width:26px;
+	height:22px;
+	display:block;
+	color:#494949;
+	text-decoration:none;
+	padding:4px 0 0 0px;
+	text-align:center;
+}
+ 
+#pagination li a:hover{background-position: -515px -678px;}
+ 
+.inactivepagination{
+	background:url(/img/proxy-list/elements.png) no-repeat -515px -678px;
+	color:#494949;
+	text-decoration:none;
+	padding:4px 0 0 5px;
+	text-align:center;
+	width:17px;
+	height:22px;
+	margin-right:4px;
+}
+ 
+#pagination .previouspageactive a{
+	background-position: -463px -678px;
+	text-indent:-10000px;
+}
+#pagination .previouspageactive a:hover{
+	background-position: -489px -678px;
+	text-indent:-10000px;
+}
+.previouspageinactive{
+	background-position: -489px -678px;
+	text-indent:-10000px;
+}
+ 
+#pagination .nextpageactive a{
+	background-position:-593px -678px;
+	text-indent:-10000px;
+}
+ 
+#pagination .nextpageactive a:hover{background-position: -567px -678px;}
+ 
+.nextpageinactive{
+	background-position:  -567px -678px;
+	text-indent:-10000px;
+}
+
+/*
+########################################################
+6. Instructions
+########################################################
+*/
+
+#instructions{
+	width:900px;
+	background:url(/img/proxy-list/elements.png) no-repeat 0 -99px;
+	overflow:hidden;
+	margin-top:35px;
+	float:left;
+	font-size:13px;
+	padding:20px;
+}
+
+
+#instructions h3{
+	width:328px;
+	height:26px;
+	text-indent:-10000px;
+	background:url(/img/proxy-list/translations/english.png) no-repeat 0 -51px;
+}
+
+#instructions h4{
+	font-size:16px;
+	margin:10px 0 10px 0;
+}
+
+#instructions li{padding:0 0 5px 0}
+
+#plicon{
+	background:url(/img/proxy-list/elements.png) right -918px;
+	width:27px;
+	height:15px;
+	display:inline-block;
+	padding-right:13px;
+}
+
+#instructionsbottom{
+	height:10px;
+	width:940px;
+	overflow:hidden;
+	background:url(/img/proxy-list/elements.png) 0 -668px;
+}
